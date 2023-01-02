@@ -55,7 +55,7 @@ Sign-in
                             </div>
                         </form>
                             <div class="d-grid">
-                                <a href="#" class="btn btn-light btn-login text-uppercase fw-bold">Recover Password</a>
+                                <a href="{% url 'accounts:resetPassword' %}" class="btn btn-light btn-login text-uppercase fw-bold">Recover Password</a>
                             </div>
                         {% endif %}
                     </div>
