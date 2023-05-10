@@ -1,0 +1,77 @@
+{% extends 'base.html' %}
+{% block nav %}
+    {% include 'customers/partial/_nav.html' %}
+{% endblock nav %}
+
+{% block title %}Table {{ table.number }}{% endblock title %}
+
+{% block mesa %}Table  {{ table.number }}{% endblock mesa %}
+
+{% block content %}
+  <div class="conteiner">
+    <div class="card p-1">
+      {% if commands %}
+      <h2 class="p-3">My Command</h2>
+        <table class="table table-striped">
+          <thead>
+            <tr>
+              <th scope="col">Order</th>
+              <th scope="col">Value</th>
+              <th scope="col">Status</th>
+            </tr>
+          </thead>
+          <tbody>
+            {% if commands.itemorder_set.all %}
+              {% for status_requests in requests %}
+                {% for requests in status_requests %}
+                  <tr>
+                    <td>
+                      <p>
+                        {{requests.item}}
+                        #TODO: put the popover
+                        {% if requests.obs %}
+                          <button type="button" class="btn btn-lg btn-primary" data-bs-toggle="popover" data-bs-title="Obs" data-bs-content="And here's some amazing content. It's very engaging. Right?">OBS</button>
+                        {% endif %}
+                      </p>
+                    </td>
+                    <td>
+                      {{requests.price}}
+                    </td>
+                    <td>
+                      {{requests.get_status_display}}
+                    </td>
+                  </tr>
+                {% endfor %}
+              {% endfor %}
+            {% else %}
+              <tr>
+                <td colspan="3">No order placed.</td>
+              </tr>
+            {% endif %}
+            <tr>
+              <td></td>
+              <td></td>
+              <td></td>
+            </tr>
+            <tr class="table-secondary fw-bold">
+              <td></td>
+              <td>TOTAL</td>
+              <td>{{ commands.amount }}</td>
+            </tr>
+          </tbody>
+        </table>
+        <a class="btn btn-danger" href="#">Request Account</a>
+      {% else %}
+      <div class="alert alert-danger m-0" role="alert">
+        <h2>There are no open orders for the table {{ table.number }}</h2>
+      </div>
+      {% endif %}
+    </div>
+
+  </div>
+  <script type="text/javascript">
+    const popover = new bootstrap.Popover('.example-popover', {
+      container: 'body'
+    })
+  </script>
+{% endblock content %}
