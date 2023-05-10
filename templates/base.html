@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -9,7 +8,11 @@
     <title>{% block title %} {% endblock title %} | Waiter Service</title>
 </head>
 <body>
+    {% block nav %}
+    {% endblock nav %}
+    
     {% include 'partial/_messages.html' %}
+
     {% block content %}
 
     {% endblock content %}

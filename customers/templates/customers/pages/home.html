@@ -1,0 +1,24 @@
+{% extends 'base.html' %}
+{% block title %}
+    Home
+{% endblock title %}  
+
+{% block nav %}
+    {% include 'customers/partial/_nav.html' %}
+{% endblock nav %}
+
+{% block content %}
+<main>
+
+</main>
+<footer>
+    <nav class="navbar fixed-bottom navbar-light bg-light" >
+        <div class="container d-flex flex-column align-items-stretch">
+            <a class="btn btn-dark mb-2" href="#">Solicitar Atendimento</a>
+            <a class="btn btn-dark mb-2" href="#">Ver Cardápio</a>
+        </div>
+    </nav>
+</footer>
+{% endblock content %}
+
+{% block footer %}{% endblock footer %}
