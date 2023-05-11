@@ -5,11 +5,16 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     {% include 'partial/_head.html' %}
+    {% block meta %}
+    {% endblock meta %}
     <title>{% block title %} {% endblock title %} | Waiter Service</title>
 </head>
+
+{% block nav %}
+    {% include 'customers/partial/_nav.html' %}
+{% endblock nav %}
+
 <body>
-    {% block nav %}
-    {% endblock nav %}
     
     {% include 'partial/_messages.html' %}
 
@@ -23,7 +28,9 @@
     <div class="navbar  navbar-light bg-light" >
         <div class="container d-flex flex-column align-items-stretch">
             <a class="btn btn-dark mb-2" href="#">Solicitar Atendimento</a>
-            <a class="btn btn-dark mb-2" href="#">Ver Cardápio</a>
+            {% block cardapio-cliente-url %}
+                <a class="btn btn-dark mb-2" href="{{table.get_menu_url}}">Ver Cardápio</a>
+            {% endblock cardapio-cliente-url %}
         </div>
     </div>
     <div class="container pt-3 mt-3">

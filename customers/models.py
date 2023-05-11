@@ -1,4 +1,5 @@
 from django.db import models
+from django.urls import reverse
 from django.utils import timezone
 from django.utils.crypto import get_random_string
 
@@ -28,6 +29,12 @@ class Table(models.Model):
                     slug_is_wrong = True
                 if slug_is_wrong:
                     self.slug = get_random_string(8)
+
+    def get_absolute_url(self):
+        return reverse("customers:clientDesk", args=(self.slug,))
+
+    def get_menu_url(self):
+        return reverse("customers:customermenu", args=(self.slug,))
 
 
 class Commands(models.Model):

@@ -1,11 +1,9 @@
 {% extends 'base.html' %}
-{% block nav %}
-    {% include 'customers/partial/_nav.html' %}
-{% endblock nav %}
 
 {% block title %}Table {{ table.number }}{% endblock title %}
 
 {% block mesa %}Table  {{ table.number }}{% endblock mesa %}
+
 
 {% block content %}
   <div class="conteiner">
@@ -28,9 +26,9 @@
                     <td>
                       <p>
                         {{requests.item}}
-                        #TODO: put the popover
                         {% if requests.obs %}
-                          <button type="button" class="btn btn-lg btn-primary" data-bs-toggle="popover" data-bs-title="Obs" data-bs-content="And here's some amazing content. It's very engaging. Right?">OBS</button>
+                          <br>
+                          {{requests.obs}}
                         {% endif %}
                       </p>
                     </td>
@@ -69,9 +67,4 @@
     </div>
 
   </div>
-  <script type="text/javascript">
-    const popover = new bootstrap.Popover('.example-popover', {
-      container: 'body'
-    })
-  </script>
 {% endblock content %}
