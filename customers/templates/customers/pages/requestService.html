@@ -1,0 +1,29 @@
+{% extends 'base.html' %}
+
+{% block meta %}
+{% endblock meta %}
+
+{% block title %}
+    request {{table.number}}
+{% endblock title %}
+
+{% block content %}
+<div class="container">
+    <div class="card p-1">
+      <div class="alert alert-success m-0" role="alert">
+        <h4 class="alert-heading">Confirmed request</h4>
+        <p>
+          Your request for <b>{{ task.get_type_display|lower }}</b> foi
+          successfully registered. One of our waiters will assist you shortly.
+        </p>
+        <hr>
+        <p class="mb-0">Go back to <a href="{{ table.get_absolute_url }}">home page</a>.</p>
+      </div>
+    </div>
+</div>
+{% endblock content %}
+{% block solicita-atendimento-url %}
+{% endblock solicita-atendimento-url %}
+{% block cardapio-cliente-url %}
+<a class="btn btn-dark mb-2" href="{{table.get_absolute_url}}">back to home page</a>
+{% endblock cardapio-cliente-url %}

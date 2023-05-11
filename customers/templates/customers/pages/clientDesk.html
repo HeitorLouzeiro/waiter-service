@@ -58,7 +58,7 @@
             </tr>
           </tbody>
         </table>
-        <a class="btn btn-danger" href="#">Request Account</a>
+        <a class="btn btn-danger" href="{% url 'customers:requestClose' table.slug %}">Request Account</a>
       {% else %}
       <div class="alert alert-danger m-0" role="alert">
         <h2>There are no open orders for the table {{ table.number }}</h2>
