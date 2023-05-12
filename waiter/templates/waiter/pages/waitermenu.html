@@ -1,0 +1,118 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block meta %}
+  <link rel="stylesheet" href="{% static 'assets/custom/css/waitermenustyle.css'%}">
+{% endblock meta %}
+{% block title %}New Order {% if table %} {{table}} {% endif %}{% endblock title %}
+{% block solicita-atendimento-url %}{% endblock solicita-atendimento-url %}
+{% block cardapio-cliente-url %}{% endblock cardapio-cliente-url %}
+
+{% block content %}
+
+<form action="{% url 'waiter:confirmOrder' %}" method="post">
+    {% csrf_token %}
+    <div class="container">
+      <div class="card p-3">
+        <div class="titulo-card">
+          <i class="fas fa-book-open fa-2x"></i>
+          <h1>New Order</h1>
+        </div>
+        <div class="define-mesa">
+          <p>
+            Mesa:
+            {% if table %}
+              {{ table.number }}
+              <input type="hidden" name="num_mesa" value="{{ table.number }}">
+            {% else %}
+              <input type="text" name="num_mesa" value="">
+            {% endif %}
+          </p>
+        </div>
+        {% for category in categories %}
+          <a class="categoria" data-bs-toggle="collapse" href="#c-{{ category.id }}" role="button" aria-expanded="false" aria-controls="c-{{ categoria.id }}">
+            <h5>{{ category }}</h5>
+            <i class="fas fa-chevron-right"></i>
+          </a>
+          <div class="collapse" id="c-{{ category.id }}">
+            {% for item in category.itemmenu_set.all %}
+              {% if item.active %}
+                <div class="item-cardapio">
+                  <div class="titulo-preco">
+                    <p class="item-titulo">{{ item }}</p>
+                    <p><span class="item-valor">R${{ item.price }}</span></p>
+                  </div>
+                  {% if item.description %}
+                    <p> {{ item.description }} </p>
+                  {% endif %}
+                  <div class="lista-itens__quantidade">
+                    <button type="button" class="menos-qtdd"><i class="fas fa-minus-circle"></i></button>
+                    <input type="number" value="0" min="0" class="qtdd" name="{{ item.id }}">
+                    <button type="button" class="mais-qtdd"><i class="fas fa-plus-circle"></i></button>
+                  </div>
+                </div>
+              {% endif %}
+            {% endfor %}
+          </div>
+        {% endfor %}
+        {% if uncategorizedItems %}
+          <a class="categoria" data-bs-toggle="collapse" href="#sem-categoria" role="button" aria-expanded="false" aria-controls="sem-categoria">
+            <h5>Itens sem categoria</h5>
+            <i class="fas fa-chevron-right"></i>
+          </a>
+          <div class="collapse" id="sem-categoria">
+            {% for item in uncategorizedItems %}
+              {% if item.active %}
+                <div class="item-cardapio">
+                  <div class="titulo-preco">
+                    <p class="item-titulo">{{ item }}</p>
+                    <p><span class="item-valor">R${{ item.price }}</span></p>
+                  </div>
+                  {% if item.description %}
+                    <p> {{ item.description }} </p>
+                  {% endif %}
+                  <div class="lista-itens__quantidade">
+                    <button type="button" class="menos-qtdd"><i class="fas fa-minus-circle"></i></button>
+                    <input type="number" value="0" min="0" class="qtdd" name="{{ item.id }}">
+                    <button type="button" class="mais-qtdd"><i class="fas fa-plus-circle"></i></button>
+                  </div>
+                </div>
+              {% endif %}
+            {% endfor %}
+          </div>
+        {% endif %}
+        <div class="d-grid gap-2 mt-3">
+          <button id="limpar-form" class="btn btn-form" type="button">Limpar formulário</button>
+          <input type="submit" class="btn btn-form" value="Fazer pedido">
+        </div>
+      </div>
+    </div>
+</form>
+  <script type="text/javascript">
+    $(document).ready(function() {
+      $(".categoria").click(function() {
+        $("i", this).toggleClass("fa-chevron-right fa-chevron-down");
+        $(this).toggleClass("clicado");
+      })
+  
+      $(".menos-qtdd").click(function() {
+        let qtdd = $(this).parent().find("input.qtdd").val()
+        if (qtdd > 0) {
+          qtdd--;
+        }
+        $(this).parent().find("input").val(qtdd);
+      })
+  
+      $(".mais-qtdd").click(function() {
+        let qtdd = $(this).parent().find("input.qtdd").val()
+        qtdd++;
+        $(this).parent().find("input").val(qtdd);
+      })
+  
+      $("#limpar-form").click(function() {
+        $("input.qtdd").val(0);
+      })
+    })
+  </script>
+
+
+{% endblock content %}

@@ -10,7 +10,7 @@
 {% block content %}
 
 <div class="container mt-3 mb-4 border-bottom">
-    <h1>Tarefas Pendentes</h1>
+    <h1>Pending Tasks</h1>
   </div>
 
   <div id="tarefas-pendentes" class="container mt-3 tarefas">
@@ -28,11 +28,11 @@
       {% for delivery in deliveries %}
         <a href="#" class="list-group-item list-group-item-action">
           <p>{{ delivery.order }}</p>
-          <p class="indica-mesa"> Mesa {{ delivery.table }}</p>
+          <p class="indica-mesa"> Table {{ delivery.table }}</p>
         </a>
       {% empty %}
         <li class="list-group-item list-group-item-action">
-          <p>Não há entregas pendentes.</p>
+          <p>There are no pending deliveries.</p>
         </li>
       {% endfor %}
     </div>
@@ -50,25 +50,25 @@
     <div id="grupo-atendimento" class="grupo list-group collapse">
     {% if prim_attendances or services %}
         {% for prim_attendance in prim_attendances %}
-        <a href="#" class="list-group-item list-group-item-action" data-bs-toggle="modal" data-bs-target="#prim_attend{{prim_prim_attendance.id}}">
-            <p>Primeiro atendimento</p>
+        <a href="#" class="list-group-item list-group-item-action" data-bs-toggle="modal" data-bs-target="#prim_attend{{prim_attendance.id}}">
+            <p>First call</p>
             <p class="indica-mesa"> {{ prim_attendance.table }}</p>
         </a>
         <!-- Modal -->
-        <div class="modal fade" id="prim_attend{{prim_prim_attendance.id}}" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal fade" id="prim_attend{{prim_attendance.id}}" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
           <div class="modal-dialog">
             <div class="modal-content">
               <div class="modal-header">
-                <h1 class="modal-title fs-5" id="exampleModalLabel">Atender Tarefa</h1>
+                <h1 class="modal-title fs-5" id="exampleModalLabel">Answer Task</h1>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
               </div>
               <div class="modal-body">
-                <p>Deseja atender a tarefa <b>{{prim_attendance}}</b>?</p>
-                <p>Ao continuar, a tarefa será removida da lista pedentes.</p>
+                <p>Do you want to fulfill the task <b>{{prim_attendance}}</b>?</p>
+                <p>By continuing, the task will be removed from the pending list.</p>
               </div>
               <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                <button type="button" class="btn btn-primary" onclick="location.href='">Save changes</button>
+                <button type="button" class="btn btn-primary" onclick="location.href='{% url 'waiter:performService' prim_attendance.id%}'">Continue</button>
               </div>
             </div>
           </div>
@@ -76,7 +76,7 @@
         {% endfor %}
         {% for service in services %}
         <a href="#" class="list-group-item list-group-item-action" data-bs-toggle="modal" data-bs-target="#service{{service.id}}">
-            <p>Atendimento</p>
+            <p>Service</p>
             <p class="indica-mesa"> {{ service.table }}</p>
         </a>
         <!-- Modal -->
@@ -84,16 +84,16 @@
           <div class="modal-dialog">
             <div class="modal-content">
               <div class="modal-header">
-                <h1 class="modal-title fs-5" id="exampleModalLabel">Atender Tarefa</h1>
+                <h1 class="modal-title fs-5" id="exampleModalLabel">Answer Task</h1>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
               </div>
               <div class="modal-body">
-                <p>Deseja atender a tarefa <b>{{service}}</b>?</p>
-                <p>Ao continuar, a tarefa será removida da lista pedentes.</p>
+                <p>Do you want to fulfill the task <b>{{service}}</b>?</p>
+                <p>By continuing, the task will be removed from the pending list.</p>
               </div>
               <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                <button type="button" class="btn btn-primary" onclick="location.href='">Save changes</button>
+                <button type="button" class="btn btn-primary" onclick="location.href='{% url 'waiter:performService' service.id%}'">Continue</button>
               </div>
             </div>
           </div>
@@ -101,13 +101,13 @@
         {% endfor %}
     {% else %}
         <li class="list-group-item list-group-item-action">
-            <p>Não há atendimentos pendentes.</p>
+            <p>There are no pending appointments.</p>
         </li>
         {% endif %}
     </div>
 
     <a class="tipo-task" data-bs-toggle="collapse" href="#grupo-fechamentos" role="button" aria-expanded="false" aria-controls="example">
-        <p class="p-task">Fechamentos</p>
+        <p class="p-task">Closures</p>
         {% if closures.count %}
           <p class="num-pendencias">{{ closures.count }}</p>
         {% else %}
@@ -119,12 +119,12 @@
     <div id="grupo-fechamentos" class="grupo list-group collapse">
       {% for closure in closures %}
         <a href="#" class="list-group-item list-group-item-action">
-          <p>Fechamento</p>
+          <p>Closure</p>
           <p class="indica-mesa"> {{ closure.table }}</p>
         </a>
       {% empty %}
         <li class="list-group-item list-group-item-action">
-          <p>Não há fechamentos pendentes.</p>
+          <p>There are no pending closings.</p>
         </li>
       {% endfor %}
     </div>
@@ -140,18 +140,17 @@
     </div>
 </div>
 <script type="text/javascript">
-    $(document).ready(function() {
-      $("a").click(function() {
-        $('i', this).not('.fa-check-circle').toggleClass('fa-chevron-right fa-chevron-down');
-      });
-      $('#refresh').click(function() {
-        document.location.reload(true);
-      });
-      $('.num-pendencias').ready(function() {
-        if (this.innerHTML === "0") {
-          console.log("oi")
-        }
-      })
+  $(document).ready(function() {
+    $("a").click(function() {
+      $('i', this).not('.fa-check-circle').toggleClass('fa-chevron-right fa-chevron-down');
     });
-  </script>
+    $('#refresh').click(function() {
+      document.location.reload(true);
+    });
+    $('.num-pendencias').ready(function() {
+      if (this.innerHTML === "0") {
+      }
+    })
+  });
+</script>
 {% endblock content %}

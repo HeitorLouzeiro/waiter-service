@@ -1,0 +1,44 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block title %} Confirma pedido {% if table %} | {{ table }} {% endif %} {% endblock title %}
+{% block meta %}
+  <link rel="stylesheet" href="{% static 'assets/custom/css/waiterstyle.css'%}">
+{% endblock meta %}
+{% block solicita-atendimento-url %}{% endblock solicita-atendimento-url %}
+{% block cardapio-cliente-url %}{% endblock cardapio-cliente-url %}
+
+{% block content %}
+<div class="container">
+  <div class="card p-3">
+    <h1>Confirmar pedido</h1>
+    <hr>
+    <table class="table">
+      <thead>
+        <tr>
+          <th>Item</th>
+          <th>Quantidade</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for order in orders %}
+        <tr>
+          <td>{{ order.item }}</td>
+          <td>{{ order.amount }}</td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+    <form action='{% url 'waiter:createOrder' %}' method='POST'>
+      {% csrf_token %}
+      <input type="hidden" name="num_mesa" value="{{ table.number }}">
+      {% for order in orders %}
+        <input type="hidden" name="{{ order.id }}" value="{{ order.amount }}">
+      {% endfor %}
+      <p>
+        <input type="submit" class="btn btn-success" value="Enviar pedido">
+        <a class="btn btn-danger" href="{% url 'waiter:newOrderTable' table.slug %}">Cancelar</a>
+      </p>
+    </form>
+  </div>
+</div>
+{% endblock content %}
