@@ -1,0 +1,157 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block title %} Panel waiter {% endblock title %}
+{% block meta %}
+  <link rel="stylesheet" href="{% static 'assets/custom/css/waiterstyle.css'%}">
+{% endblock meta %}
+{% block solicita-atendimento-url %}{% endblock solicita-atendimento-url %}
+{% block cardapio-cliente-url %}{% endblock cardapio-cliente-url %}
+
+{% block content %}
+
+<div class="container mt-3 mb-4 border-bottom">
+    <h1>Tarefas Pendentes</h1>
+  </div>
+
+  <div id="tarefas-pendentes" class="container mt-3 tarefas">
+    <a class="tipo-task" data-bs-toggle="collapse" href="#grupo-entregas" role="button" aria-expanded="false" aria-controls="example">
+        <p class="p-task">Deliveries</p>
+        {% if deliveries.count %}
+          <p class="num-pendencias">{{ deliveries.count }}</p>
+        {% else %}
+          <p id="sem-pendencia"><i class="fas fa-check-circle"></i></p>
+        {% endif %}
+        <i class="fas fa-chevron-right"></i>
+    </a>
+
+    <div id="grupo-entregas" class="grupo list-group collapse">
+      {% for delivery in deliveries %}
+        <a href="#" class="list-group-item list-group-item-action">
+          <p>{{ delivery.order }}</p>
+          <p class="indica-mesa"> Mesa {{ delivery.table }}</p>
+        </a>
+      {% empty %}
+        <li class="list-group-item list-group-item-action">
+          <p>Não há entregas pendentes.</p>
+        </li>
+      {% endfor %}
+    </div>
+
+    <a class="tipo-task" data-bs-toggle="collapse" href="#grupo-atendimento" role="button" aria-expanded="false" aria-controls="example">
+        <p class="p-task">Services</p>
+        {% if qtd_services %}
+          <p class="num-pendencias">{{ qtd_services }}</p>
+        {% else %}
+          <p id="sem-pendencia"><i class="fas fa-check-circle"></i></p>
+        {% endif %}
+        <i class="fas fa-chevron-right"></i>
+    </a>
+
+    <div id="grupo-atendimento" class="grupo list-group collapse">
+    {% if prim_attendances or services %}
+        {% for prim_attendance in prim_attendances %}
+        <a href="#" class="list-group-item list-group-item-action" data-bs-toggle="modal" data-bs-target="#prim_attend{{prim_prim_attendance.id}}">
+            <p>Primeiro atendimento</p>
+            <p class="indica-mesa"> {{ prim_attendance.table }}</p>
+        </a>
+        <!-- Modal -->
+        <div class="modal fade" id="prim_attend{{prim_prim_attendance.id}}" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+          <div class="modal-dialog">
+            <div class="modal-content">
+              <div class="modal-header">
+                <h1 class="modal-title fs-5" id="exampleModalLabel">Atender Tarefa</h1>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+              </div>
+              <div class="modal-body">
+                <p>Deseja atender a tarefa <b>{{prim_attendance}}</b>?</p>
+                <p>Ao continuar, a tarefa será removida da lista pedentes.</p>
+              </div>
+              <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-primary" onclick="location.href='">Save changes</button>
+              </div>
+            </div>
+          </div>
+        </div>
+        {% endfor %}
+        {% for service in services %}
+        <a href="#" class="list-group-item list-group-item-action" data-bs-toggle="modal" data-bs-target="#service{{service.id}}">
+            <p>Atendimento</p>
+            <p class="indica-mesa"> {{ service.table }}</p>
+        </a>
+        <!-- Modal -->
+        <div class="modal fade" id="service{{service.id}}" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+          <div class="modal-dialog">
+            <div class="modal-content">
+              <div class="modal-header">
+                <h1 class="modal-title fs-5" id="exampleModalLabel">Atender Tarefa</h1>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+              </div>
+              <div class="modal-body">
+                <p>Deseja atender a tarefa <b>{{service}}</b>?</p>
+                <p>Ao continuar, a tarefa será removida da lista pedentes.</p>
+              </div>
+              <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-primary" onclick="location.href='">Save changes</button>
+              </div>
+            </div>
+          </div>
+        </div>
+        {% endfor %}
+    {% else %}
+        <li class="list-group-item list-group-item-action">
+            <p>Não há atendimentos pendentes.</p>
+        </li>
+        {% endif %}
+    </div>
+
+    <a class="tipo-task" data-bs-toggle="collapse" href="#grupo-fechamentos" role="button" aria-expanded="false" aria-controls="example">
+        <p class="p-task">Fechamentos</p>
+        {% if closures.count %}
+          <p class="num-pendencias">{{ closures.count }}</p>
+        {% else %}
+          <p id="sem-pendencia"><i class="fas fa-check-circle"></i></p>
+        {% endif %}
+        <i class="fas fa-chevron-right"></i>
+    </a>
+
+    <div id="grupo-fechamentos" class="grupo list-group collapse">
+      {% for closure in closures %}
+        <a href="#" class="list-group-item list-group-item-action">
+          <p>Fechamento</p>
+          <p class="indica-mesa"> {{ closure.table }}</p>
+        </a>
+      {% empty %}
+        <li class="list-group-item list-group-item-action">
+          <p>Não há fechamentos pendentes.</p>
+        </li>
+      {% endfor %}
+    </div>
+  </div>
+
+
+<div class="d-flex justify-content-center">
+    <div class="py-3 md-3">
+        <button class="btn btn-outline-primary" type="button">Home</button>
+        <button class="btn btn-outline-secondary" type="button">Menu</button>
+        <button class="btn btn-outline-primary" type="info">Table</button>
+        <button class="btn btn-outline-dark" type="button">Ordes</button> 
+    </div>
+</div>
+<script type="text/javascript">
+    $(document).ready(function() {
+      $("a").click(function() {
+        $('i', this).not('.fa-check-circle').toggleClass('fa-chevron-right fa-chevron-down');
+      });
+      $('#refresh').click(function() {
+        document.location.reload(true);
+      });
+      $('.num-pendencias').ready(function() {
+        if (this.innerHTML === "0") {
+          console.log("oi")
+        }
+      })
+    });
+  </script>
+{% endblock content %}

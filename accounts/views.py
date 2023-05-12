@@ -29,7 +29,7 @@ def loginUser(request):
 
         if user is not None:
             login(request, user)
-            return redirect('waiterservice:home')
+            return redirect('waiter:panelview')
         else:
             messages.info(request, 'Username OR password is incorrect')
     return render(request, template_name)
@@ -37,6 +37,8 @@ def loginUser(request):
 
 @login_required(login_url='accounts:loginUser', redirect_field_name='next')
 def logoutUser(request):
+    print('User logged out')
+    print(request.method)  # Adicione este print
     if request.method == 'POST':
         logout(request)
     return redirect('accounts:loginUser')

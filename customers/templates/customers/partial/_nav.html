@@ -6,12 +6,28 @@
       </button>
       <div class="collapse navbar-collapse" id="navbarSupportedContent">
         <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+          {% if table.number %}
           <li class="nav-item">
             {% block get-url-table %}
-              <a class="nav-link active" aria-current="page" href="{{ table.get_absolute_url }}">Table</a>
+            <a class="nav-link active" aria-current="page" href="{{ table.get_absolute_url }}">Table {{table.number}}</a>
             {% endblock get-url-table %}
           </li>
+          {% endif %}
+          {%if user.is_authenticated %}
+          <li class="nav-item ">
+            <a class="nav-link">{{user.email}}</a>
+          </li>
+          <li class="nav-item ">
+            <form action="{% url 'accounts:logoutUser' %}" method='POST'>
+              {% csrf_token %}
+              <button class="btn btn-dark px-3 py-2 d-block"  type="submit" >Logout</button>
+            </form>
+          {% else %}
+
+          {%endif%}
         </ul>
       </div>
+      
+      
     </div>
 </nav>
