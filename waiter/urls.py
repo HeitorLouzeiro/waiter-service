@@ -12,4 +12,6 @@ urlpatterns = [
     path('new-order/<slug:table_slug>/', views.newOrder, name='newOrderTable'),
     path('confirm-order/', views.confirmOrder, name='confirmOrder'),
     path('create-order/', views.createOrder, name='createOrder'),
+    path('status-order/<slug:delivery_id>',
+         views.statusOrder, name='statusOrder'),
 ]

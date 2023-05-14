@@ -21,7 +21,8 @@ class Task(models.Model):
 
     type = models.CharField(max_length=16, choices=OPTIONS_TYPE)
     waiter = models.ForeignKey(
-        settings.AUTH_USER_MODEL, on_delete=models.PROTECT, null=True, blank=True)
+        settings.AUTH_USER_MODEL, on_delete=models.PROTECT,
+        null=True, blank=True)
     status = models.CharField(
         max_length=9, choices=STATUS_OPTIONS, default='pending')
     hr_creation = models.DateTimeField(auto_now_add=True)
@@ -41,3 +42,7 @@ class Task(models.Model):
 class Delivery(models.Model):
     order = models.OneToOneField(ItemOrder, on_delete=models.CASCADE)
     task = models.ForeignKey(Task, on_delete=models.CASCADE)
+
+    def __str__(self):
+        return f"Delivery of {self.order.item.item} on table \
+                    {self.task.table.number} status {self.order.status}"

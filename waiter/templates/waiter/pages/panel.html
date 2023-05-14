@@ -26,10 +26,33 @@
 
     <div id="grupo-entregas" class="grupo list-group collapse">
       {% for delivery in deliveries %}
-        <a href="#" class="list-group-item list-group-item-action">
-          <p>{{ delivery.order }}</p>
-          <p class="indica-mesa"> Table {{ delivery.table }}</p>
+      <a href="#" class="list-group-item list-group-item-action" data-bs-toggle="modal" data-bs-target="#delivery{{delivery.id}}">
+          <p>{{ delivery.order.item }}</p>
+          <p>{{delivery.order.get_status_display }}</p>
+          <p class="indica-mesa"> {{ delivery.task.table }}</p>
         </a>
+                <!-- Modal -->
+        <div class="modal fade" id="delivery{{delivery.id}}" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+          <div class="modal-dialog">
+            <div class="modal-content">
+              <div class="modal-header">
+                <h1 class="modal-title fs-5" id="exampleModalLabel">Update order.</h1>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+              </div>
+              <div class="modal-body">
+                <p>Do you want to mark as{% if delivery.order.status == 'ready' %} <b>Delivery </b> {%else%} <b> Ready</b> {% endif %}?</p>
+                <p>By continuing, the task will be removed from the pending list.</p>
+                <input type="hidden" name="delivery_id" name="delivery.id">
+              </div>
+              <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-primary" onclick="location.href='{% url 'waiter:statusOrder' delivery.id %}'">Continue</button>
+              </div>
+            </div>
+          </div>
+        </div>
+        
+
       {% empty %}
         <li class="list-group-item list-group-item-action">
           <p>There are no pending deliveries.</p>

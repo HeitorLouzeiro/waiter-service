@@ -14,7 +14,7 @@ from .models import Delivery, Task
 def panelView(request):
     template = 'waiter/pages/panel.html'
 
-    deliveries = Delivery.objects.all()
+    deliveries = Delivery.objects.filter(~Q(order__status="delivered"), )
     prim_attendances = Task.objects.filter(
         type='prim_attendance', status="pending")
     services = Task.objects.filter(type='service', status="pending")
@@ -36,6 +36,7 @@ def performService(request, task_id):
     waiter = request.user
     task = Task.objects.get(id=task_id)
     task.attend_task(waiter)
+
     return redirect('waiter:newOrderTable', table_slug=task.table.slug)
 
 
@@ -76,28 +77,40 @@ def confirmOrder(request):
                 orders.append(
                     Order(id, ItemMenu.objects.get(id=id), int(amount)))
 
-    return render(request, 'waiter/pages/confirmorder.html', {'orders': orders, 'table': table})
+    return render(request, 'waiter/pages/confirmorder.html', {'orders': orders,
+                                                              'table': table})
 
 
 def createOrder(request):
     orderDict = request.POST.copy()
     numTable = int(orderDict.get('num_mesa'))
     table = Table.objects.get(number=numTable)
+
     commands = Commands.objects.get(Table=table, status='open')
     del orderDict['num_mesa']
     del orderDict['csrfmiddlewaretoken']
 
     for item_id, amount in orderDict.items():
         itemmenu = ItemMenu.objects.get(id=int(item_id))
-        print(itemmenu)
         for i in range(int(amount)):
             newOder = ItemOrder(
                 item=itemmenu,
                 price=float(itemmenu.price),
                 commands=commands,
-                status='preparation' if itemmenu.needs_preparation else 'ready',
+                status='preparation' if itemmenu.needs_preparation else 'ready'
             )
             newOder.save()
-
     commands.update_total()
+
+    return redirect('waiter:panelview')
+
+
+def statusOrder(request, delivery_id):
+    delivery = Delivery.objects.get(id=delivery_id)
+    order = ItemOrder.objects.get(id=delivery.order.id)
+    if order.status == 'preparation':
+        order.order_ready()
+    elif order.status == 'ready':
+        order.deliver_order()
+
     return redirect('waiter:panelview')

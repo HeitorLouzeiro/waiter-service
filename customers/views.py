@@ -44,10 +44,10 @@ def customermenu(request, slug):
     uncategorizedItems = ItemMenu.objects.filter(
         category__isnull=True, active=True)
 
-    return render(request, 'customers/pages/customermenu.html', {'table': table,
-                                                                 'categories': categories,
-                                                                 'uncategorizedItems': uncategorizedItems
-                                                                 })
+    return render(request, 'customers/pages/customermenu.html',
+                  {'table': table, 'categories': categories,
+                   'uncategorizedItems': uncategorizedItems
+                   })
 
 
 def requestService(request, slug):
@@ -84,10 +84,9 @@ def requestService(request, slug):
         task = Task.objects.create(
             type='prim_attendance', table=table
         )
-    return render(request, 'customers/pages/requestService.html', {'table': table,
-                                                                   'commands': commands,
-                                                                   'task': task
-                                                                   })
+    return render(request, 'customers/pages/requestService.html',
+                  {'table': table, 'commands': commands, 'task': task
+                   })
 
 
 def requestClose(request, slug):
@@ -102,5 +101,5 @@ def requestClose(request, slug):
     except Task.DoesNotExist:
         task = Task.objects.create(
             type='closed', table=table)
-    return render(request, 'customers/pages/requestService.html', {'table': table,
-                                                                   'task': task})
+    return render(request, 'customers/pages/requestService.html',
+                  {'table': table, 'task': task})

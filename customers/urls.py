@@ -10,5 +10,5 @@ urlpatterns = [
     path('customermenu/<slug:slug>/', views.customermenu, name='customermenu'),
     path('request-service/<slug:slug>/',
          views.requestService, name='requestService'),
-    path('request-close/<slug:slug>/', views.requestClose, name='requestClose'),
+    path('request-close/<slug:slug>/', views.requestClose, name='requestClose'),  # noqa
 ]
