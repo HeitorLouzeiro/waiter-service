@@ -114,3 +114,14 @@ def statusOrder(request, delivery_id):
         order.deliver_order()
 
     return redirect('waiter:panelview')
+
+
+def performServiceClose(request, task_id):
+    waiter = request.user
+    task = Task.objects.get(id=task_id)
+    task.attend_task(waiter)
+    table = task.table
+    commands = Commands.objects.get(Table=table, status='open')
+    commands.close_command()
+
+    return redirect('waiter:panelview')

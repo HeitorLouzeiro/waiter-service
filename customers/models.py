@@ -75,6 +75,11 @@ class Commands(models.Model):
         self.amount = new_total
         self.save()
 
+    def close_command(self):
+        self.status = 'close'
+        self.closed = timezone.now()
+        self.save()
+
     def __str__(self):
         return f"Command {self.code} - Table {self.Table.number}"
 

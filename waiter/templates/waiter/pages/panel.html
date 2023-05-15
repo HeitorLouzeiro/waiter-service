@@ -141,10 +141,30 @@
 
     <div id="grupo-fechamentos" class="grupo list-group collapse">
       {% for closure in closures %}
-        <a href="#" class="list-group-item list-group-item-action">
+        <a href="#" class="list-group-item list-group-item-action" data-bs-toggle="modal" data-bs-target="#closure{{closure.id}}">
           <p>Closure</p>
           <p class="indica-mesa"> {{ closure.table }}</p>
         </a>
+        <!-- Modal -->
+        <div class="modal fade" id="closure{{closure.id}}" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+         <div class="modal-dialog">
+           <div class="modal-content">
+             <div class="modal-header">
+               <h1 class="modal-title fs-5" id="exampleModalLabel">Command closing.</h1>
+               <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+             </div>
+             <div class="modal-body">
+               <p>Do you want to close the table command <b>{{ closure.table }}</b>?</p>
+               <p>By continuing, the task will be removed from the pending list.</p>
+               <input type="hidden" name="num_table" value="{{ closure.id }}">
+             </div>
+             <div class="modal-footer">
+               <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+               <button type="button" class="btn btn-primary" onclick="location.href='{% url 'waiter:performServiceClose' closure.id %}'">Continue</button>
+             </div>
+           </div>
+         </div>
+        </div>
       {% empty %}
         <li class="list-group-item list-group-item-action">
           <p>There are no pending closings.</p>
