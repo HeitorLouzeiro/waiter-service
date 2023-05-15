@@ -29,7 +29,7 @@
       <a href="#" class="list-group-item list-group-item-action" data-bs-toggle="modal" data-bs-target="#delivery{{delivery.id}}">
           <p>{{ delivery.order.item }}</p>
           <p>{{delivery.order.get_status_display }}</p>
-          <p class="indica-mesa"> {{ delivery.task.table }}</p>
+          <p class="indica-mesa"> {{ delivery.order.commands.Table }}</p>
         </a>
                 <!-- Modal -->
         <div class="modal fade" id="delivery{{delivery.id}}" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">

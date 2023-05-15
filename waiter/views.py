@@ -14,7 +14,7 @@ from .models import Delivery, Task
 def panelView(request):
     template = 'waiter/pages/panel.html'
 
-    deliveries = Delivery.objects.filter(~Q(order__status="delivered"), )
+    deliveries = Delivery.objects.filter(~Q(order__status="delivered"))
     prim_attendances = Task.objects.filter(
         type='prim_attendance', status="pending")
     services = Task.objects.filter(type='service', status="pending")

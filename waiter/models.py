@@ -41,8 +41,8 @@ class Task(models.Model):
 
 class Delivery(models.Model):
     order = models.OneToOneField(ItemOrder, on_delete=models.CASCADE)
-    task = models.ForeignKey(Task, on_delete=models.CASCADE)
 
     def __str__(self):
         return f"Delivery of {self.order.item.item} on table \
-                    {self.task.table.number} status {self.order.status}"
+                    {self.order.commands.Table.number} \
+                        status {self.order.status}"
