@@ -62,6 +62,7 @@ def newOrder(request, table_slug=None):
     return render(request, template, context)
 
 
+@login_required(login_url='accounts:loginUser', redirect_field_name='next')
 def confirmOrder(request):
     Order = namedtuple('Order', ['id', 'item', 'amount'])
     orders = []
@@ -81,6 +82,7 @@ def confirmOrder(request):
                                                               'table': table})
 
 
+@login_required(login_url='accounts:loginUser', redirect_field_name='next')
 def createOrder(request):
     orderDict = request.POST.copy()
     numTable = int(orderDict.get('num_mesa'))
@@ -105,6 +107,7 @@ def createOrder(request):
     return redirect('waiter:panelview')
 
 
+@login_required(login_url='accounts:loginUser', redirect_field_name='next')
 def statusOrder(request, delivery_id):
     delivery = Delivery.objects.get(id=delivery_id)
     order = ItemOrder.objects.get(id=delivery.order.id)
@@ -116,6 +119,7 @@ def statusOrder(request, delivery_id):
     return redirect('waiter:panelview')
 
 
+@login_required(login_url='accounts:loginUser', redirect_field_name='next')
 def performServiceClose(request, task_id):
     waiter = request.user
     task = Task.objects.get(id=task_id)
