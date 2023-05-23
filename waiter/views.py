@@ -1,5 +1,6 @@
 from collections import namedtuple
 
+from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 from django.db.models import Count, Q
 from django.shortcuts import redirect, render
@@ -103,6 +104,7 @@ def createOrder(request):
             )
             newOder.save()
     commands.update_total()
+    messages.success(request, 'Pedido realizado com sucesso!')
 
     return redirect('waiter:panelview')
 
@@ -113,8 +115,10 @@ def statusOrder(request, delivery_id):
     order = ItemOrder.objects.get(id=delivery.order.id)
     if order.status == 'preparation':
         order.order_ready()
+        messages.success(request, 'Order ready for delivery!')
     elif order.status == 'ready':
         order.deliver_order()
+        messages.success(request, 'Order delivered successfully!')
 
     return redirect('waiter:panelview')
 
@@ -127,5 +131,6 @@ def performServiceClose(request, task_id):
     table = task.table
     commands = Commands.objects.get(Table=table, status='open')
     commands.close_command()
+    messages.success(request, 'Command closed successfully!')
 
     return redirect('waiter:panelview')
