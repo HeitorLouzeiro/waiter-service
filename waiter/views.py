@@ -104,7 +104,7 @@ def createOrder(request):
             )
             newOder.save()
     commands.update_total()
-    messages.success(request, 'Pedido realizado com sucesso!')
+    messages.success(request, 'Order placed successfully!')
 
     return redirect('waiter:panelview')
 

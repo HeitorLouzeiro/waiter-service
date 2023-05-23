@@ -9,7 +9,7 @@
 {% block title %}Table {{ table.number }}{% endblock title %}
 
 {% block cardapio-cliente-url %}
-  <a class="btn btn-dark mb-2" href="{{ table.get_absolute_url }}">Voltar</a>
+  <a class="btn btn-dark mb-2" href="{{ table.get_absolute_url }}">To go back</a>
 {% endblock cardapio-cliente-url %}
 
 {% block mesa %}
@@ -46,7 +46,7 @@
       {% endfor %}
       {% if uncategorizedItems %}
         <a class="categoria" data-bs-toggle="collapse" href="#sem-categoria" role="button" aria-expanded="false" aria-controls="sem-categoria">
-          <h5>uncategorized items</h5>
+          <h5>Uncategorized items</h5>
           <i class="fas fa-chevron-right"></i>
         </a>
         <div class="collapse" id="sem-categoria">

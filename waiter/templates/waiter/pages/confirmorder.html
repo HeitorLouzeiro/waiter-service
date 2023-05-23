@@ -10,13 +10,13 @@
 {% block content %}
 <div class="container">
   <div class="card p-3">
-    <h1>Confirmar pedido</h1>
+    <h1>Confirm Order</h1>
     <hr>
     <table class="table">
       <thead>
         <tr>
           <th>Item</th>
-          <th>Quantidade</th>
+          <th>Amount</th>
         </tr>
       </thead>
       <tbody>
@@ -35,8 +35,8 @@
         <input type="hidden" name="{{ order.id }}" value="{{ order.amount }}">
       {% endfor %}
       <p>
-        <input type="submit" class="btn btn-success" value="Enviar pedido">
-        <a class="btn btn-danger" href="{% url 'waiter:newOrderTable' table.slug %}">Cancelar</a>
+        <input type="submit" class="btn btn-success" value="Send request">
+        <a class="btn btn-danger" href="{% url 'waiter:newOrderTable' table.slug %}">Cancel</a>
       </p>
     </form>
   </div>
