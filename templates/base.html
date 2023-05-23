@@ -28,10 +28,10 @@
     <div class="navbar  navbar-light bg-light" >
         <div class="container d-flex flex-column align-items-stretch">
             {% block solicita-atendimento-url %}
-                <a class="btn btn-dark mb-2" href="{% url 'customers:requestService' table.slug %}">Solicitar Atendimento</a>
+                <a class="btn btn-dark mb-2" href="{% url 'customers:requestService' table.slug %}">Request Service</a>
             {% endblock solicita-atendimento-url %}
             {% block cardapio-cliente-url %}
-                <a class="btn btn-dark mb-2" href="{{table.get_menu_url}}">Ver Cardápio</a>
+                <a class="btn btn-dark mb-2" href="{{table.get_menu_url}}">See menu</a>
             {% endblock cardapio-cliente-url %}
         </div>
     </div>
